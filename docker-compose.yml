@@ -1,9 +1,19 @@
-version: '2'
+version: '3'
 services:
   web:
-    image: hogelog/dmemo
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
     env_file: .env.docker
     volumes:
       - ./log/docker:/app/log
     ports:
       - "3000:3000"
+    depends_on:
+      - database
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    expose:
+      - 5432
